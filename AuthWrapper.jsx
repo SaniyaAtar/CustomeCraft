@@ -85,8 +85,8 @@ function AuthWrapper({ type }) {
         >
           <div className="flex flex-col justify-center items-center p-8 gap-7">
             <h3 className="text-2xl font-semibold text-slate-700">
-              {type === "login" ? "Login" : "Sign"}
-              in to SkillHub
+              {type === "login" ? "Login " : "Sign "}
+                to CustomCraft
             </h3>
             <div className="flex flex-col gap-5">
               <button className="text-white bg-blue-500 p-3 font-semibold w-80 flex items-center justify-center relative">
