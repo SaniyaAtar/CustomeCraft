@@ -7,6 +7,10 @@ import CheckoutForm from "../components/CheckoutForm";
 import { useRouter } from "next/router";
 
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_KEY);
+<<<<<<< HEAD
+=======
+
+>>>>>>> origin/main
 
 function Checkout() {
   const [clientSecret, setClientSecret] = useState("");
