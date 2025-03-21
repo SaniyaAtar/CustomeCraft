@@ -46,7 +46,7 @@ function Navbar() {
   };
 
   const links = [
-    //{ linkName: "English", handler: "#", type: "link" },
+    
     { linkName: "Become a Seller", handler: "#", type: "link" },
     { linkName: "Sign in", handler: handleLogin, type: "button" },
   ];

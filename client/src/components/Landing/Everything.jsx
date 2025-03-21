@@ -1,34 +1,36 @@
 import Image from "next/image";
 import React from "react";
 import { BsCheckCircle } from "react-icons/bs";
+
 function Everything() {
   const everythingData = [
     {
-      title: "Stick to your budget",
+      title: "Celebrate Artistry and Craftsmanship",
       subtitle:
-        "Find the right service for every price point. No hourly rates, just project-based pricing.",
+        "Discover a curated collection of handcrafted items, showcasing the dedication and talent of small businesses and artisans.",
     },
     {
-      title: "Get quality work done quickly",
+      title: "Custom Orders Made Easy",
       subtitle:
-        "Hand your project over to a talented freelancer in minutes, get long-lasting results.",
+        "Enjoy the freedom to customize your order according to your preferences, ensuring a truly one-of-a-kind experience.",
     },
     {
-      title: "Pay when you're happy",
+      title: "Support Local Artisans",
       subtitle:
-        "Upfront quotes mean no surprises. Payments only get released when you approve.",
+        "Every purchase directly contributes to the growth and sustainability of talented artisans, helping them reach a broader audience.",
     },
     {
-      title: "Count on 24/7 support",
+      title: "Seamless Shopping Experience",
       subtitle:
-        "Our round-the-clock support team is available to help anytime, anywhere.",
+        "Our user-friendly platform ensures smooth navigation, secure payments, and reliable support to meet all your needs.",
     },
   ];
+
   return (
     <div className="bg-[#f1fdf7] flex py-20 justify-between px-24">
       <div>
         <h2 className="text-4xl mb-5 text-[#404145] font-bold">
-          The best part? Everything.
+          Why Choose CustomeCraft?
         </h2>
         <ul className="flex flex-col gap-10">
           {everythingData.map(({ title, subtitle }) => {
@@ -44,8 +46,12 @@ function Everything() {
           })}
         </ul>
       </div>
-      <div className="relative h-96 w-2/4">
-        <Image src="/everything.webp" fill alt="everything" />
+      <div className="relative h-98 w-2/5">
+        <Image
+          src="/customcraft.webp"
+          fill
+          alt="CustomeCraft Features"
+        />
       </div>
     </div>
   );

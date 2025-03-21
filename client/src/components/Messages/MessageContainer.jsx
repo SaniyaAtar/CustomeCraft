@@ -5,26 +5,32 @@ import axios from "axios";
 import { ADD_MESSAGE, GET_MESSAGES } from "../../utils/constants";
 import { useRouter } from "next/router";
 import { useStateProvider } from "../../context/StateContext";
+
 function MessageContainer() {
   const router = useRouter();
   const { orderId } = router.query;
   const [{ userInfo }] = useStateProvider();
   const [recipentId, setRecipentId] = useState(undefined);
+  const [messageText, setMessageText] = useState("");
+  const [messages, setMessages] = useState([]);
+
+  // Fetch messages and mark them as read
   useEffect(() => {
     const getMessages = async () => {
-      const {
-        data: { messages: dataMessages, recipentId: recipent },
-      } = await axios.get(`${GET_MESSAGES}/${orderId}`, {
-        withCredentials: true,
-      });
-      setMessages(dataMessages);
-      setRecipentId(recipent);
+      if (orderId && userInfo) {
+        const {
+          data: { messages: dataMessages, recipentId: recipent },
+        } = await axios.get(`${GET_MESSAGES}/${orderId}`, {
+          withCredentials: true,
+        });
+        setMessages(dataMessages);
+        setRecipentId(recipent);
+      }
     };
-    if (orderId && userInfo) {
-      getMessages();
-    }
+    getMessages();
   }, [orderId, userInfo]);
 
+  // Format timestamp
   function formatTime(timestamp) {
     const date = new Date(timestamp);
     let hours = date.getHours();
@@ -33,14 +39,12 @@ function MessageContainer() {
     hours %= 12;
     hours = hours || 12;
     minutes = minutes < 10 ? "0" + minutes : minutes;
-    const formattedTime = `${hours}:${minutes} ${ampm}`;
-    return formattedTime;
+    return `${hours}:${minutes} ${ampm}`;
   }
 
-  const [messageText, setMessageText] = useState("");
-  const [messages, setMessages] = useState([]);
+  // Send message
   const sendMessage = async () => {
-    if (messageText.length) {
+    if (messageText.length && recipentId) {
       const response = await axios.post(
         `${ADD_MESSAGE}/${orderId}`,
         { message: messageText, recipentId },
@@ -52,12 +56,13 @@ function MessageContainer() {
       }
     }
   };
+
   return (
     <div className="h-[80vh]">
-      <div className="max-h-[80vh]   flex flex-col justify-center items-center">
+      <div className="max-h-[80vh] flex flex-col justify-center items-center">
         <div className="bg-white py-8 px-4 shadow-2xl sm:rounded-lg sm:px-10 w-[80vw] border flex flex-col">
           <div className="mt-8">
-            <div className="space-y-4 h-[50vh] overflow-y-auto pr-4 ">
+            <div className="space-y-4 h-[50vh] overflow-y-auto pr-4">
               {messages.map((message) => (
                 <div
                   key={message.id}
@@ -78,11 +83,11 @@ function MessageContainer() {
                     <span className="text-sm text-gray-600">
                       {formatTime(message.createdAt)}
                     </span>
-                    <span>
-                      {message.senderId === userInfo.id && message.isRead && (
+                    {message.senderId === userInfo.id && message.isRead && (
+                      <span className="ml-2">
                         <BsCheckAll />
-                      )}
-                    </span>
+                      </span>
+                    )}
                   </div>
                 </div>
               ))}
@@ -97,6 +102,7 @@ function MessageContainer() {
               name="message"
               onChange={(e) => setMessageText(e.target.value)}
               value={messageText}
+              onKeyPress={(e) => e.key === "Enter" && sendMessage()}
             />
             <button
               type="submit"

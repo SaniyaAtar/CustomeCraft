@@ -29,11 +29,23 @@ function Profile() {
 
       // Load the user's image if it exists
       if (userInfo?.imageName) {
-        fetch(userInfo.imageName)
-          .then(response => response.blob())
-          .then(blob => {
-            const fileName = userInfo.imageName.split('/').pop();
-            setImage(new File([blob], fileName, { type: blob.type }));
+        const imageUrl = `${HOST}/${userInfo.imageName}`;
+        fetch(imageUrl)
+          .then((response) => {
+            if (!response.ok) throw new Error("Failed to fetch image");
+            return response.blob();
+          })
+          .then((blob) => {
+            if (blob && blob.size > 0) {
+              const fileName = userInfo.imageName.split("/").pop();
+              setImage(new File([blob], fileName, { type: blob.type }));
+            } else {
+              setErrorMessage("Invalid image file.");
+            }
+          })
+          .catch((err) => {
+            console.error("Error loading image:", err);
+            setErrorMessage("Failed to load profile image.");
           });
       }
       setIsLoaded(true);
@@ -55,14 +67,23 @@ function Profile() {
 
   const setProfile = async () => {
     try {
+      console.log("Sending data:", JSON.stringify(data, null, 2)); // Log data in readable format
+  
+      // Validate required fields
+      if (!data.userName || !data.fullName || !data.description) {
+        setErrorMessage("Please fill in all required fields.");
+        return;
+      }
+  
       const response = await axios.post(SET_USER_INFO, data, { withCredentials: true });
       if (response.data.userNameError) {
         setErrorMessage("Enter a Unique Username");
         return;
       }
-
-      let imageName = "";
+  
+      let imageName = userInfo?.imageName || "";
       if (image) {
+        console.log("Uploading image:", image); // Log image before uploading
         const formData = new FormData();
         formData.append("images", image);
         const { data: imgData } = await axios.post(SET_USER_IMAGE, formData, {
@@ -71,15 +92,19 @@ function Profile() {
         });
         imageName = imgData.img;
       }
-
+  
       dispatch({
         type: reducerCases.SET_USER,
         userInfo: { ...userInfo, ...data, image: imageName ? `${HOST}/${imageName}` : null },
       });
-
+  
       router.push("/");
     } catch (err) {
-      console.error(err);
+      console.error("Error setting profile:", {
+        message: err.message,
+        response: err.response?.data,
+        status: err.response?.status,
+      });
       setErrorMessage("An error occurred while setting your profile.");
     }
   };
@@ -107,10 +132,11 @@ function Profile() {
                     src={URL.createObjectURL(image)}
                     alt="Profile"
                     fill
+                    sizes="(max-width: 768px) 100vw, 50vw"
                     className="rounded-full"
                   />
                 ) : (
-                  <span className="text-6xl text-white">{userInfo.email[0].toUpperCase()}</span>
+                  <span className="text-6xl text-white">{userInfo?.email?.[0]?.toUpperCase() || "U"}</span>
                 )}
                 <div className={`absolute bg-slate-400 h-full w-full rounded-full flex items-center justify-center transition-opacity duration-100 ${imageHover ? "opacity-100" : "opacity-0"}`}>
                   <span className="flex items-center justify-center relative">

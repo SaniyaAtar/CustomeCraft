@@ -96,9 +96,9 @@ function HomeBanner() {
           <ul className="flex gap-5">
             <li
               className="text-sm py-1 px-3 border rounded-full hover:bg-white hover:text-black transition-all duration-300	cursor-pointer"
-              onClick={() => router.push("/search?q=website design")}
+              onClick={() => router.push("/search?q=wedding card")}
             >
-              Website Design
+              Wedding card
             </li>
             <li
               className="text-sm py-1 px-3 border rounded-full hover:bg-white hover:text-black transition-all duration-300	cursor-pointer"

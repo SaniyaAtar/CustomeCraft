@@ -7,6 +7,7 @@ import React, { useEffect, useState } from "react";
 function Orders() {
   const [orders, setOrders] = useState([]);
   const [{ userInfo }] = useStateProvider();
+
   useEffect(() => {
     const getOrders = async () => {
       try {
@@ -20,6 +21,7 @@ function Orders() {
     };
     if (userInfo) getOrders();
   }, [userInfo]);
+
   return (
     <div className="min-h-[80vh] my-10 mt-0 px-32">
       <h3 className="m-5 text-2xl font-semibold">All your Orders</h3>
@@ -48,6 +50,9 @@ function Orders() {
               <th scope="col" className="px-6 py-3">
                 Send Message
               </th>
+              <th scope="col" className="px-6 py-3">
+                View Reply from Seller
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -74,6 +79,15 @@ function Orders() {
                       className="font-medium text-blue-600  hover:underline"
                     >
                       Send
+                    </Link>
+                  </td>
+
+                  <td className="px-6 py-4 ">
+                    <Link
+                      href={`/buyer/orders/messages/${order.id}`}
+                      className="font-medium text-blue-600  hover:underline"
+                    >
+                      View Reply
                     </Link>
                   </td>
                 </tr>

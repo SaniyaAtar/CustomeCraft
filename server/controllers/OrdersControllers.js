@@ -2,7 +2,7 @@
 import { PrismaClient } from "@prisma/client";
 import Stripe from "stripe";
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY); // Use environment variable for secret key
+const stripe = new Stripe("sk_test_51Q6SwF2NmuYGzMM0WnF6okurCXbwwHQvdzdLPgilUtkz3tiCkJa9rAvCpRZSjrg5ryvpNQuv2alFjEiTEvVIbPYC002cNOIkT8"); // Use environment variable for secret key
 const prisma = new PrismaClient();
 
 export const addOrder = async (req, res) => {

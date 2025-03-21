@@ -1,8 +1,8 @@
 export const categories = [
   { name: "Select",logo: "/service-1.svg" },
-  { name: "Nippan Art", logo: "/service-2.svg" },
+  { name: "Logo Design", logo: "/service-2.svg" },
   { name: "Writing & Translation", logo: "/service-3.svg" },
-  { name: "Video & Animation", logo: "/service-4.svg" },
+  { name: "Wedding card ", logo: "/service-4.svg" },
   { name: "Resin Art", logo: "/service-5.svg" },
   { name: "String Art", logo: "/service-6.svg" },
   { name: "Business", logo: "/service-7.svg" },
